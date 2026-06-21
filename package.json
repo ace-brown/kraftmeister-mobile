@@ -1,7 +1,7 @@
 {
   "name": "kraftmeister-mobile",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "dependencies": {
     "expo": "~56.0.12",
     "expo-status-bar": "~56.0.4",
@@ -14,5 +14,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-native": "^0.72.8",
+    "typescript": "^6.0.3"
+  }
 }
