@@ -2,6 +2,7 @@
   "expo": {
     "name": "kraftmeister-mobile",
     "slug": "kraftmeister-mobile",
+    "scheme": "kraftmeister",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,10 +16,16 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
-      }
+      },
+      "package": "com.anonymous.kraftmeistermobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a3de2f4e-148e-465b-816d-1cca7bcd8a8d"
+      }
     }
   }
 }
