@@ -1,21 +1,12 @@
-import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+import { QueryProvider } from './src/providers/QueryProvider';
+import { AppNavigator } from './src/navigation/AppNavigator';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>My text 2</Text>
-      <Button title="click me" />
+    <QueryProvider>
       <StatusBar style="auto" />
-    </View>
+      <AppNavigator />
+    </QueryProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
