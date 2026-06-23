@@ -1,18 +1,21 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_URL = 'http://10.0.2.2:4000';
+const API_URL = "http://172.28.192.178:4000";
 
 async function getAccessToken(): Promise<string | null> {
-  return AsyncStorage.getItem('access_token');
+  return AsyncStorage.getItem("access_token");
 }
 
 async function getRefreshToken(): Promise<string | null> {
-  return AsyncStorage.getItem('refresh_token');
+  return AsyncStorage.getItem("refresh_token");
 }
 
-async function applyTokens(tokens: { accessToken: string; refreshToken: string }) {
-  await AsyncStorage.setItem('access_token', tokens.accessToken);
-  await AsyncStorage.setItem('refresh_token', tokens.refreshToken);
+async function applyTokens(tokens: {
+  accessToken: string;
+  refreshToken: string;
+}) {
+  await AsyncStorage.setItem("access_token", tokens.accessToken);
+  await AsyncStorage.setItem("refresh_token", tokens.refreshToken);
 }
 
 async function tryRefresh(): Promise<string | null> {
@@ -20,8 +23,8 @@ async function tryRefresh(): Promise<string | null> {
   if (!refreshToken) return null;
 
   const res = await fetch(`${API_URL}/auth/refresh`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refreshToken }),
   });
 
@@ -32,12 +35,15 @@ async function tryRefresh(): Promise<string | null> {
   return tokens.accessToken;
 }
 
-export async function apiClient<T>(endpoint: string, options?: RequestInit): Promise<T> {
+export async function apiClient<T>(
+  endpoint: string,
+  options?: RequestInit,
+): Promise<T> {
   const token = await getAccessToken();
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     ...options,
@@ -46,25 +52,25 @@ export async function apiClient<T>(endpoint: string, options?: RequestInit): Pro
   if (response.status === 401) {
     const newToken = await tryRefresh();
     if (!newToken) {
-      await AsyncStorage.removeItem('access_token');
-      await AsyncStorage.removeItem('refresh_token');
-      throw new Error('Sitzung abgelaufen');
+      await AsyncStorage.removeItem("access_token");
+      await AsyncStorage.removeItem("refresh_token");
+      throw new Error("Sitzung abgelaufen");
     }
 
     const retry = await fetch(`${API_URL}${endpoint}`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${newToken}`,
       },
       ...options,
     });
 
-    if (!retry.ok) throw new Error('API-Anfrage fehlgeschlagen');
+    if (!retry.ok) throw new Error("API-Anfrage fehlgeschlagen");
     if (retry.status === 204) return undefined as T;
     return retry.json();
   }
 
-  if (!response.ok) throw new Error('API-Anfrage fehlgeschlagen');
+  if (!response.ok) throw new Error("API-Anfrage fehlgeschlagen");
   if (response.status === 204) return undefined as T;
   return response.json();
 }
