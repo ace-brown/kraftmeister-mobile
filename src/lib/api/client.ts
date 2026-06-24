@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const API_URL = "https://tanned-velvet-shadiness.ngrok-free.dev";
+export const API_URL = "https://tanned-velvet-shadiness.ngrok-free.dev";
 
 async function getAccessToken(): Promise<string | null> {
   return AsyncStorage.getItem("access_token");
