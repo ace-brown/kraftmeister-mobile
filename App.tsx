@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { QueryProvider } from "./src/providers/QueryProvider";
+import { QueryProvider, AuthContextProvider } from "./src/providers";
 import { AppNavigator } from "./src/navigation/AppNavigator";
-import { AuthContextProvider } from "./src/providers/AuthContext";
 
 export default function App() {
   return (

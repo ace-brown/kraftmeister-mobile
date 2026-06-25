@@ -1,26 +1,17 @@
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "../../constants/colors";
-import { useJobs } from "../../features/jobs/hooks/useJobs";
+import { useJobs } from "../../features/jobs/hooks";
+import { Loading, ShowError } from "../../components/ui";
 
 /** Placeholder screen for the jobs list. */
 export function JobsScreen() {
   const { data, isLoading, error } = useJobs();
   console.log("data", data);
 
-  if (isLoading)
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    );
+  if (isLoading) return <Loading />;
 
-  if (error)
-    return (
-      <View style={styles.centered}>
-        <Text>Fehler beim Laden der Aufträge</Text>
-      </View>
-    );
+  if (error) return <ShowError errorMsg="Fehler beim Laden der Aufträge" />;
 
   return (
     <SafeAreaView style={styles.container}>
