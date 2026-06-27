@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors } from "../../constants/colors";
 import { useJobs } from "../../features/jobs/hooks";
 import { Loading, ShowError } from "../../components/ui";
+import { useAuth } from "../../providers";
 
 /** Placeholder screen for the jobs list. */
 export function JobsScreen() {
   const { data, isLoading, error } = useJobs();
-  console.log("data", data);
+  const { logout } = useAuth();
 
   if (isLoading) return <Loading />;
 
@@ -20,6 +21,9 @@ export function JobsScreen() {
         {data?.map((job) => (
           <Text key={job.id}>{job.title}</Text>
         ))}
+        <Pressable onPress={logout}>
+          <Text>Abmelden</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
