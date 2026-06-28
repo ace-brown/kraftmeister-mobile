@@ -2,6 +2,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const API_URL = "https://tanned-velvet-shadiness.ngrok-free.dev";
 
+let onSessionExpired: (() => void) | null = null;
+
+export function setSessionExpiredCallback(fn: () => void) {
+  onSessionExpired = fn;
+}
+
 async function getAccessToken(): Promise<string | null> {
   return AsyncStorage.getItem("access_token");
 }
@@ -52,8 +58,7 @@ export async function apiClient<T>(
   if (response.status === 401) {
     const newToken = await tryRefresh();
     if (!newToken) {
-      await AsyncStorage.removeItem("access_token");
-      await AsyncStorage.removeItem("refresh_token");
+      onSessionExpired?.();
       throw new Error("Sitzung abgelaufen");
     }
 

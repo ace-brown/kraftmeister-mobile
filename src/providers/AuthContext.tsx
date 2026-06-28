@@ -7,6 +7,7 @@ import {
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthTokens, AuthUser } from "../features/auth/types/auth.types";
+import { setSessionExpiredCallback } from "../lib/api/client";
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -24,6 +25,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setSessionExpiredCallback(logout);
+
     const checkToken = async () => {
       const accessToken = await AsyncStorage.getItem("access_token");
       if (accessToken) {
