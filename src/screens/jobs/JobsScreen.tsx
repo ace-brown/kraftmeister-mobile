@@ -8,7 +8,6 @@ import { useAuth } from "../../providers";
 /** Placeholder screen for the jobs list. */
 export function JobsScreen() {
   const { data, isLoading, error } = useJobs();
-  const { logout } = useAuth();
 
   if (isLoading) return <Loading />;
 
@@ -21,9 +20,6 @@ export function JobsScreen() {
         {data?.map((job) => (
           <Text key={job.id}>{job.title}</Text>
         ))}
-        <Pressable onPress={logout}>
-          <Text>Abmelden</Text>
-        </Pressable>
       </View>
     </SafeAreaView>
   );
